@@ -1,0 +1,17 @@
+com\example\manytoone\mapper\UserMapper.class
+com\example\manytoone\repository\BookRepository.class
+com\example\manytoone\mapper\BookMapperImpl.class
+com\example\manytoone\dto\BookDTO.class
+com\example\manytoone\repository\UserRepository.class
+com\example\manytoone\mapper\UserMapperImpl.class
+com\example\manytoone\service\UserService.class
+com\example\manytoone\service\BookService.class
+com\example\manytoone\service\UserServiceImpl.class
+com\example\manytoone\ManytooneApplication.class
+com\example\manytoone\controller\UserController.class
+com\example\manytoone\dto\UserDTO.class
+com\example\manytoone\model\Book.class
+com\example\manytoone\mapper\BookMapper.class
+com\example\manytoone\model\User.class
+com\example\manytoone\controller\BookController.class
+com\example\manytoone\service\BookServiceImpl.class
