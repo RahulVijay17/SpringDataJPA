@@ -1,0 +1,12 @@
+com\example\demo\DemoApplication.class
+com\example\demo\service\MotorcycleCompanyService.class
+com\example\demo\controller\MotorcycleCompanyController.class
+com\example\demo\mapper\MotorcycleCompanyMapperImpl.class
+com\example\demo\model\MotorcycleCompany.class
+com\example\demo\dto\ProductionLineDTO.class
+com\example\demo\serviceImpl\MotorcycleCompanyServiceImpl.class
+com\example\demo\model\ProductionLine.class
+com\example\demo\repository\MotorcycleCompanyRepository.class
+com\example\demo\repository\ProductionLineRepository.class
+com\example\demo\mapper\MotorcycleCompanyMapper.class
+com\example\demo\dto\MotorcycleCompanyDTO.class
