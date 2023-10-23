@@ -1,0 +1,12 @@
+com\example\onetomanyuni\model\Post.class
+com\example\onetomanyuni\repository\PostRepository.class
+com\example\onetomanyuni\model\Comment.class
+com\example\onetomanyuni\mapper\PostMapper.class
+com\example\onetomanyuni\OnetomanyuniApplication.class
+com\example\onetomanyuni\dto\PostDTO.class
+com\example\onetomanyuni\mapper\PostMapperImpl.class
+com\example\onetomanyuni\repository\CommentRepository.class
+com\example\onetomanyuni\service\impl\PostServiceImpl.class
+com\example\onetomanyuni\dto\CommentDTO.class
+com\example\onetomanyuni\controller\PostController.class
+com\example\onetomanyuni\service\PostService.class
