@@ -17,10 +17,6 @@ public class MotorcycleCompanyController {
 
     @Autowired
     private MotorcycleCompanyService motorcycleCompanyService;
-    @Autowired
-    private MotorcycleCompanyRepository motorcycleCompanyRepository;
-    @Autowired
-    private ProductionLineRepository productionLineRepository;
 
     @GetMapping
     //http://localhost:8089/api/v1
