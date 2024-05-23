@@ -58,49 +58,50 @@ public class MotorcycleCompanyServiceImpl implements MotorcycleCompanyService {
         motorcycleCompanyRepository.deleteById(id);
     }
 
-    @Override
-    public MotorcycleCompanyDTO updateMotorcycleCompany(MotorcycleCompanyDTO motorcycleCompanyDTO) {
-        // 1. Retrieve the existing MotorcycleCompany entity from the database
-        Optional<MotorcycleCompany> optionalCompany = motorcycleCompanyRepository.findById(motorcycleCompanyDTO.getId());
+  @Override
+public MotorcycleCompanyDTO updateMotorcycleCompany(MotorcycleCompanyDTO motorcycleCompanyDTO) {
+    Optional<MotorcycleCompany> optionalCompany = motorcycleCompanyRepository.findById(motorcycleCompanyDTO.getId());
 
-        if (optionalCompany.isPresent()) {
-            // 2. Update the fields of the retrieved entity with DTO values
-            MotorcycleCompany existingCompany = optionalCompany.get();
-            existingCompany.setName(motorcycleCompanyDTO.getName());
-            existingCompany.setNumberOfMotorcycles(motorcycleCompanyDTO.getNumberOfMotorcycles());
+    if (optionalCompany.isPresent()) {
+        MotorcycleCompany existingCompany = optionalCompany.get();
+        existingCompany.setName(motorcycleCompanyDTO.getName());
+        existingCompany.setNumberOfMotorcycles(motorcycleCompanyDTO.getNumberOfMotorcycles());
 
-            // 3. Update associated ProductionLine entities
-            List<ProductionLineDTO> productionLineDTOs = motorcycleCompanyDTO.getProductionLines();
-            if (productionLineDTOs != null) {
-                List<ProductionLine> updatedProductionLines = new ArrayList<>();
+        List<ProductionLineDTO> productionLineDTOs = motorcycleCompanyDTO.getProductionLines();
+        if (productionLineDTOs != null) {
+            List<ProductionLine> existingProductionLines = existingCompany.getProductionLines();
 
-                for (ProductionLineDTO productionLineDTO : productionLineDTOs) {
-                    // Fetch the existing ProductionLine entity by ID
-                    Optional<ProductionLine> optionalProductionLine = productionLineRepository.findById(productionLineDTO.getId());
+            // Update existing or add new ProductionLines
+            for (ProductionLineDTO productionLineDTO : productionLineDTOs) {
+                ProductionLine productionLine = existingProductionLines.stream()
+                        .filter(pl -> pl.getId().equals(productionLineDTO.getId()))
+                        .findFirst()
+                        .orElseGet(() -> new ProductionLine());
 
-                    if (optionalProductionLine.isPresent()) {
-                        // Update the existing ProductionLine entity based on the DTO data
-                        ProductionLine existingProductionLine = optionalProductionLine.get();
-                        existingProductionLine.setType(productionLineDTO.getTypes()); // Corrected field name
-                        existingProductionLine.setProductionRate(productionLineDTO.getProductionRate());
-                        updatedProductionLines.add(existingProductionLine);
-                    }
+                productionLine.setType(productionLineDTO.getType());
+                productionLine.setProductionRate(productionLineDTO.getProductionRate());
+                productionLine.setMotorcycleCompany(existingCompany);
+
+                if (productionLine.getId() == null) {
+                    existingProductionLines.add(productionLine);
                 }
-
-                // Update the MotorcycleCompany with the updated ProductionLine entities
-                existingCompany.setProductionLines(updatedProductionLines);
             }
 
-            // 4. Save the updated entity and its associated ProductionLine entities
-            MotorcycleCompany updatedCompany = motorcycleCompanyRepository.save(existingCompany);
+            // Remove ProductionLines that are not in the DTO
+            existingProductionLines.removeIf(existingPL -> 
+                productionLineDTOs.stream().noneMatch(dto -> dto.getId().equals(existingPL.getId()))
+            );
 
-            // 5. Optionally, return a DTO representing the updated entity
-            return MotorcycleCompanyMapper.INSTANCE.motorcycleCompanyToDTO(updatedCompany);
-        } else {
-            // Handle the case where the entity with the given ID is not found
-            return null;
+            existingCompany.setProductionLines(existingProductionLines);
         }
+
+        MotorcycleCompany updatedCompany = motorcycleCompanyRepository.save(existingCompany);
+        return MotorcycleCompanyMapper.INSTANCE.motorcycleCompanyToDTO(updatedCompany);
+    } else {
+        return null;
     }
+}
+
 
     @Override
     public Map<String, List<MotorcycleCompanyDTO>> getCompanyGroupedByName() {
